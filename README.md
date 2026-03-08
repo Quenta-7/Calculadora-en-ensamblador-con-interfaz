@@ -30,7 +30,7 @@ Este proyecto combina la potencia del ensamblador x86-64 con la facilidad de uso
 ## 📁 Estructura del Proyecto
 
 ```
-Calculadora/
+Calculadora-en-ensamblador-con-interfaz/
 ├── calculadora_gui.py       # Interfaz gráfica principal (Python + Tkinter)
 ├── README.md                # Este archivo
 ├── scripts/
@@ -38,8 +38,7 @@ Calculadora/
 ├── src/
 │   ├── aritmetica.asm       # Operaciones aritméticas (José)
 │   ├── logica.asm           # Operaciones lógicas (Efraín)
-│   ├── conversion.asm       # Conversiones numéricas (Emmi)
-│   └── lib_python.asm       # Utilitarios para la librería
+│   └── conversion.asm       # Conversiones numéricas (Emmi)
 └── build/                   # Directorio de compilación (generado)
     ├── aritmetica.o
     ├── logica.o

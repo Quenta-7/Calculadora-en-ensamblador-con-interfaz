@@ -24,8 +24,8 @@ Este proyecto combina la potencia del ensamblador x86-64 con la facilidad de uso
 - NOT (¬)
 
 ### 🔄 Conversiones
-- Binario a Decimal
-- Hexadecimal a Decimal
+- Binario a Hexadecimal
+- Hexadecimal a Binario
 
 ## 📁 Estructura del Proyecto
 
@@ -150,8 +150,8 @@ Interface Tkinter (Python)
 - `asmNot(a)` → retorna ~a
 
 **Conversiones:**
-- `asmBinToNum(cadena_binaria)` → retorna conversión a decimal
-- `asmHexToNum(cadena_hexadecimal)` → retorna conversión a decimal
+- `asmBinToHex(cadena_binaria)` → retorna conversión a hexadecimal
+- `asmHexToBin(cadena_hexadecimal)` → retorna conversión a binario
 
 ## 👥 Contribuidores
 

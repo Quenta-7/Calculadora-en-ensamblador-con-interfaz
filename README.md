@@ -1,80 +1,227 @@
-# ⚙ Calculadora ASM — WebAssembly
+# Calculadora UNSAAC — Ensamblador x86-64
 
-Calculadora con formulario web donde las operaciones aritméticas, lógicas y de conversión están implementadas en **ensamblador** mediante **WebAssembly (.wat / .wasm)**.
+Una calculadora moderna con interfaz gráfica (GUI) que implementa operaciones matemáticas, lógicas y de conversión usando **ensamblador x86-64** compilado a una librería compartida, integrada con Python.
 
-## 🗂 Estructura del proyecto
+## 📋 Descripción del Proyecto
+
+Este proyecto combina la potencia del ensamblador x86-64 con la facilidad de uso de una interfaz gráfica Python usando Tkinter. La aplicación está optimizada para el rendimiento mediante la invocación de funciones en lenguaje ensamblador desde Python mediante `ctypes`.
+
+### Universidad
+**UNSAAC** (Universidad Nacional de San Antonio Abad del Cusco)
+
+## ✨ Características
+
+### 📐 Operaciones Aritméticas
+- Suma
+- Resta
+- Multiplicación
+- División
+
+### 🔢 Operaciones Lógicas
+- AND (⊈)
+- OR (∪)
+- XOR (⊕)
+- NOT (¬)
+
+### 🔄 Conversiones
+- Binario a Decimal
+- Hexadecimal a Decimal
+
+## 📁 Estructura del Proyecto
 
 ```
-calculadora-asm/
-├── index.html        ← Formulario (HTML + CSS)
-├── style.css         ← Estilos retro-terminal
-├── main.js           ← Puente JS ↔ WebAssembly
-├── operaciones.wat   ← ⭐ ENSAMBLADOR (WebAssembly Text)
-├── operaciones.wasm  ← Binario compilado del .wat
-└── README.md
+Calculadora/
+├── calculadora_gui.py       # Interfaz gráfica principal (Python + Tkinter)
+├── README.md                # Este archivo
+├── scripts/
+│   └── compile_gui.sh       # Script para compilar módulos ASM
+├── src/
+│   ├── aritmetica.asm       # Operaciones aritméticas (José)
+│   ├── logica.asm           # Operaciones lógicas (Efraín)
+│   ├── conversion.asm       # Conversiones numéricas (Emmi)
+│   └── lib_python.asm       # Utilitarios para la librería
+└── build/                   # Directorio de compilación (generado)
+    ├── aritmetica.o
+    ├── logica.o
+    ├── conversion.o
+    └── libcalc.so           # Librería compartida compilada
 ```
 
-## 🔧 Operaciones implementadas en ensamblador (.wat)
+## 🛠️ Requisitos
 
-### Aritméticas
-| Operación | Instrucción ASM |
-|-----------|----------------|
-| Suma      | `i32.add` (≡ ADD EAX, EBX) |
-| Resta     | `i32.sub` (≡ SUB EAX, EBX) |
-| Multiplicar | `i32.mul` (≡ IMUL EAX, EBX) |
-| Dividir   | `i32.div_s` (≡ IDIV EBX) |
-| Módulo    | `i32.rem_s` (≡ IDIV → EDX) |
-| Potencia  | loop con `i32.mul` (≡ IMUL + LOOP) |
-| Valor abs | `i32.shr_s` + `i32.xor` + `i32.sub` (≡ SAR + XOR + SUB) |
+### Sistema Operativo
+- Linux (x86-64)
 
-### Lógicas / Bitwise
-| Operación | Instrucción ASM |
-|-----------|----------------|
-| AND       | `i32.and` (≡ AND EAX, EBX) |
-| OR        | `i32.or`  (≡ OR  EAX, EBX) |
-| XOR       | `i32.xor` (≡ XOR EAX, EBX) |
-| NOT       | `i32.xor` con -1 (≡ NOT EAX) |
-| SHL       | `i32.shl` (≡ SHL EAX, CL) |
-| SHR       | `i32.shr_u` (≡ SHR EAX, CL) |
+### Dependencias
+- **Python 3.x** con tk
+- **NASM** (Netwide Assembler) para compilar código ensamblador
+- **GNU ld** (linker) para generar la librería compartida
+
+### Instalación de dependencias (Debian/Ubuntu)
+
+```bash
+sudo apt-get update
+sudo apt-get install python3 python3-tk nasm gcc
+```
+
+## 🚀 Instalación y Uso
+
+### 1. Clonar o descargar el proyecto
+
+```bash
+git clone <repositorio>
+cd Calculadora
+```
+
+### 2. Compilar los módulos de ensamblador
+
+Ejecutar el script de compilación:
+
+```bash
+bash scripts/compile_gui.sh
+```
+
+Este script:
+- Compila cada módulo ASM a objetos `.o`
+- Enlaza los objetos para generar `libcalc.so`
+- Verifica que no haya errores en la compilación
+
+### 3. Ejecutar la calculadora
+
+```bash
+python3 calculadora_gui.py
+```
+
+La ventana de la calculadora se abrirá con acceso a todas las funcionalidades.
+
+## ⌨️ Controles
+
+### Operaciones Aritméticas
+- Números: `0-9`
+- Operadores: `+`, `-`, `*` (×), `/` (÷)
+- Igualar: `Enter` o `=`
+- Limpiar: `Escape`, `Delete` o `C`
+- Backspace: `←` (borra el último carácter)
+
+### Operaciones Lógicas
+- Dígitos binarios: `0`, `1`
+- AND: `&` (con operando previo)
+- OR: `|` (con operando previo)
+- XOR: `^` (con operando previo)
+- NOT: `~` (con operando previo)
+- Igualar: `Enter`
+- Limpiar: `Escape` o `C`
 
 ### Conversiones
-| Operación | Método |
-|-----------|--------|
-| DEC → BIN | `getBit()` en WASM (SHR + AND por cada bit) |
-| DEC → HEX | `.toString(16)` en JS |
-| DEC → OCT | `.toString(8)` en JS |
+- Hexadecimal: `0-9`, `A-F`
+- Binario: `0`, `1`
+- Resultado automático después de ingresar los dígitos
 
-## 🚀 Cómo ejecutar
+## 🏗️ Arquitectura Técnica
 
-### Opción A — Servidor local (recomendado)
-```bash
-# Python
-python -m http.server 8080
+### Flujo de Ejecución
 
-# Node.js
-npx serve .
 ```
-Luego abre: `http://localhost:8080`
-
-### Opción B — Live Server (VS Code)
-Instala la extensión **Live Server** → clic derecho en `index.html` → *Open with Live Server*
-
-> ⚠️ **No abrir el index.html directamente** (file://) porque los navegadores bloquean fetch() de archivos locales por seguridad CORS.
-
-## ☁️ Deploy en Netlify
-1. Ve a [netlify.com/drop](https://app.netlify.com/drop)
-2. Arrastra toda la carpeta `calculadora-asm/`
-3. ¡Listo! Obtienes un link público
-
-## 🛠 Compilar el .wat manualmente
-Si modificas `operaciones.wat`, recompila con:
-```bash
-# Online: https://wat2wasm.surge.sh
-# O con wabt:
-npm install -g wabt
-wat2wasm operaciones.wat -o operaciones.wasm
+Interface Tkinter (Python)
+         ↓
+   calculadora_gui.py
+         ↓
+    ctypes.CDLL()
+         ↓
+     libcalc.so (Compilada)
+         ↓
+   Módulos ASM x86-64
+   - aritmetica.asm
+   - logica.asm
+   - conversion.asm
 ```
+
+### Funciones Exportadas por libcalc.so
+
+**Aritméticas:**
+- `asmSuma(a, b)` → retorna a + b
+- `asmResta(a, b)` → retorna a - b
+- `asmMultiplicacion(a, b)` → retorna a × b
+- `asmDivision(a, b)` → retorna a ÷ b
+
+**Lógicas:**
+- `asmAnd(a, b)` → retorna a & b
+- `asmOr(a, b)` → retorna a | b
+- `asmXor(a, b)` → retorna a ^ b
+- `asmNot(a)` → retorna ~a
+
+**Conversiones:**
+- `asmBinToNum(cadena_binaria)` → retorna conversión a decimal
+- `asmHexToNum(cadena_hexadecimal)` → retorna conversión a decimal
+
+## 👥 Contribuidores
+
+- **José** - Implementación de operaciones aritméticas
+- **Efraín** - Implementación de operaciones lógicas
+- **Emmi** - Implementación de conversiones
+
+## 📝 Compilación Manual
+
+Si necesita recompilar sin usar el script:
+
+```bash
+# Compilar cada módulo
+nasm -f elf64 src/aritmetica.asm -o build/aritmetica.o
+nasm -f elf64 src/logica.asm -o build/logica.o
+nasm -f elf64 src/conversion.asm -o build/conversion.o
+
+# Enlazar la librería compartida
+ld -shared \
+    build/aritmetica.o \
+    build/logica.o \
+    build/conversion.o \
+    -o build/libcalc.so
+
+# Ver símbolos exportados
+nm -D build/libcalc.so | grep " T "
+```
+
+## 🐛 Solución de problemas
+
+### Error: "No se encontró ./build/libcalc.so"
+
+**Solución:** Ejecutar primero el script de compilación:
+```bash
+bash scripts/compile_gui.sh
+```
+
+### Error: "nasm: command not found"
+
+**Solución:** Instalar NASM:
+```bash
+sudo apt-get install nasm
+```
+
+### Error: "No module named 'tkinter'"
+
+**Solución:** Instalar python3-tk:
+```bash
+sudo apt-get install python3-tk
+```
+
+## 📚 Referencias Técnicas
+
+- **x86-64 Assembly:** Arquitectura de 64 bits para procesadores Intel/AMD
+- **NASM:** Netwide Assembler - ensamblador modular para x86
+- **ctypes:** Librería FFI de Python para llamadas C/Nativas
+- **Tkinter:** Toolkit GUI estándar de Python
+
+## 📄 Licencia
+
+Proyecto académico de UNSAAC
+
+## 💡 Notas de Desarrollo
+
+- La interfaz está optimizada para resolución 400x680 px y NO es redimensionable
+- El tema oscuro proporciona mejor experiencia visual
+- Los cálculos de gran magnitud pueden desbordarse en x86-64 (int64)
+- La librería se genera en tiempo de compilación, no en tiempo de ejecución
 
 ---
-**Materia:** Arquitectura de Computadoras / Lenguaje Ensamblador  
-**Tecnologías:** HTML · CSS · JavaScript · WebAssembly (WAT/WASM)
+
+**Última actualización:** 8 de marzo de 2026

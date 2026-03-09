@@ -596,7 +596,91 @@ class Calculadora:
         self._reset()
 
 
+# ============================================
+# PANTALLA DE BIENVENIDA
+# ============================================
+class PantallaBienvenida:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Calculadora UNSAAC")
+        self.root.geometry("500x400")
+        self.root.resizable(False, False)
+        self.root.configure(bg=BG)
+        
+        # Centrar ventana en pantalla
+        self.root.update_idletasks()
+        x = (self.root.winfo_screenwidth() // 2) - (500 // 2)
+        y = (self.root.winfo_screenheight() // 2) - (400 // 2)
+        self.root.geometry(f"+{x}+{y}")
+        
+        # Frame principal
+        frame = tk.Frame(self.root, bg=BG)
+        frame.pack(fill="both", expand=True, padx=20, pady=40)
+        
+        # Título
+        tk.Label(
+            frame, text="CALCULADORA", 
+            font=("Consolas", 32, "bold"),
+            bg=BG, fg=MORADO
+        ).pack(pady=(20, 10))
+        
+        # Subtítulo
+        tk.Label(
+            frame, text="UNSAAC — Ensamblador x86-64",
+            font=("Consolas", 11),
+            bg=BG, fg=CELESTE
+        ).pack(pady=(0, 30))
+        
+        # Separador
+        sep = tk.Frame(frame, bg=OVERLAY, height=2)
+        sep.pack(fill="x", pady=(10, 20))
+        
+        # Sección Autores
+        tk.Label(
+            frame, text="AUTORES",
+            font=("Consolas", 10, "bold"),
+            bg=BG, fg=NARANJA
+        ).pack(pady=(10, 15))
+        
+        autores_text = """José        — Operaciones Aritméticas
+Efraín      — Operaciones Lógicas
+Emmi        — Conversiones Numéricas"""
+        
+        tk.Label(
+            frame, text=autores_text,
+            font=("Consolas", 9),
+            bg=BG, fg=SUBTEXT,
+            justify="center"
+        ).pack(pady=(0, 30))
+        
+        # Botón Start
+        btn_start = tk.Button(
+            frame, text="▶ START",
+            font=("Consolas", 11, "bold"),
+            bg=VERDE, fg=BG,
+            activebackground=VERDE, activeforeground=BG,
+            command=self._start,
+            cursor="hand2",
+            bd=0, padx=30, pady=12
+        )
+        btn_start.pack(pady=(20, 0))
+        
+        # Footer
+        tk.Label(
+            frame, text="Universidad Nacional de San Antonio Abad del Cusco",
+            font=("Consolas", 8),
+            bg=BG, fg=OVERLAY
+        ).pack(side="bottom", pady=(20, 0))
+    
+    def _start(self):
+        """Cierra pantalla de bienvenida e inicia calculadora"""
+        self.root.destroy()
+        calc_root = tk.Tk()
+        Calculadora(calc_root)
+        calc_root.mainloop()
+
+
 if __name__ == "__main__":
     root = tk.Tk()
-    Calculadora(root)
+    PantallaBienvenida(root)
     root.mainloop()

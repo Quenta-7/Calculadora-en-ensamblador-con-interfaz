@@ -6,44 +6,66 @@ Una calculadora moderna con interfaz gráfica (GUI) que implementa operaciones m
 
 Este proyecto combina la potencia del ensamblador x86-64 con la facilidad de uso de una interfaz gráfica Python usando Tkinter. La aplicación está optimizada para el rendimiento mediante la invocación de funciones en lenguaje ensamblador desde Python mediante `ctypes`.
 
-### Universidad
-**UNSAAC** (Universidad Nacional de San Antonio Abad del Cusco)
+**Asignatura:** Organización y Arquitectura del Computador  
+**Universidad:** Universidad Nacional de San Antonio Abad del Cusco
+**Facultad:** Ingeniería Eléctrica, Electrónica, Informática y Mecánica  
+**Escuela:** Profesional de Ingeniería Informática y de Sistemas  
+**Docente:** Ing. Vanesa Lavilla Alvarez  
+**Integrantes:**
+- Emmi Daniela Huaman Tairo
+- Jose Francisco Quentasi Juachin  
+- Efrain Vitorino Marin
 
-## ✨ Características
+## ✨ Características Principales
+
+### 🎨 Interfaz Gráfica (GUI)
+- **Pantalla de bienvenida** con información de la universidad y equipo
+- **Tema visual oscuro** optimizado para la comodidad visual
+- **Interfaz responsiva** con historial en tiempo real
+- **Sistema de pestañas** para acceso rápido a diferentes modos de cálculo
+- **Paleta de colores profesional:** Catppuccin (morado, azul, naranja, verde, etc.)
+- **Tamaño fijo no redimensionable:** 660×720 píxeles
 
 ### 📐 Operaciones Aritméticas
-- Suma
-- Resta
-- Multiplicación
-- División
+- Suma, Resta, Multiplicación, División
+- Cálculo automático de residuo en divisiones
+- Soporte para enteros hasta 6 dígitos
+- Validación contra división por cero
 
-### 🔢 Operaciones Lógicas
-- AND (⊈)
-- OR (∪)
-- XOR (⊕)
-- NOT (¬)
+### 🔢 Operaciones Lógicas (4 bits)
+- AND (⊈) - Conjunción lógica
+- OR (∪) - Disyunción lógica
+- XOR (⊕) - OR exclusivo
+- NOT (¬) - Negación (complemento a 1)
+- Rango: 0000 a 1111 (0-15 en decimal)
 
-### 🔄 Conversiones
-- Binario a Hexadecimal
-- Hexadecimal a Binario
+### 🔄 Conversiones Numéricas
+- **Binario ↔ Hexadecimal:**
+  - Binario: 8 bits exactos (0-255 decimal)
+  - Hexadecimal: 2 dígitos (00-FF)
+  - Validación de formato automática
 
 ## 📁 Estructura del Proyecto
 
 ```
 Calculadora-en-ensamblador-con-interfaz/
-├── calculadora_gui.py       # Interfaz gráfica principal (Python + Tkinter)
-├── README.md                # Este archivo
+├── calculadora_gui.py          # Aplicación principal (GUI Tkinter + ctypes)
+├── README.md                   # Este archivo de documentación
+├── compile_win.bat             # Script de compilación para Windows
+├── build/                      # Directorio de compilación (generado)
+│   ├── aritmetica.o           # Objeto compilado de aritmetica.asm
+│   ├── logica.o               # Objeto compilado de logica.asm
+│   ├── conversion.o           # Objeto compilado de conversion.asm
+│   ├── libcalc.so             # Librería compartida (Linux)
+│   ├── libcalc.dll            # Librería dinámica (Windows)
+│   └── libcalc.exp            # Tabla de exportación (Windows)
 ├── scripts/
-│   └── compile_gui.sh       # Script para compilar módulos ASM
-├── src/
-│   ├── aritmetica.asm       # Operaciones aritméticas (José)
-│   ├── logica.asm           # Operaciones lógicas (Efraín)
-│   └── conversion.asm       # Conversiones numéricas (Emmi)
-└── build/                   # Directorio de compilación (generado)
-    ├── aritmetica.o
-    ├── logica.o
-    ├── conversion.o
-    └── libcalc.so           # Librería compartida compilada
+│   └── compile_gui.sh         # Script de compilación para Linux
+└── src/                        # Código fuente en ensamblador
+    ├── aritmetica.asm         # Funciones aritméticas (Autor: José)
+    ├── logica.asm             # Funciones lógicas (Autor: Efraín)
+    ├── conversion.asm         # Funciones de conversión (Autor: Emmi)
+    └── libcalc.def            # Definición de exportación (Windows)
 ```
 
 ## 🛠️ Requisitos
@@ -113,65 +135,120 @@ python3 calculadora_gui.py
 
 La ventana de la calculadora se abrirá con acceso a todas las funcionalidades.
 
-## ⌨️ Controles
+## ⌨️ Controles y Atajos de Teclado
 
 ### Operaciones Aritméticas
-- Números: `0-9`
-- Operadores: `+`, `-`, `*` (×), `/` (÷)
-- Igualar: `Enter` o `=`
-- Limpiar: `Escape`, `Delete` o `C`
-- Backspace: `←` (borra el último carácter)
+| Entrada | Función |
+|---------|---------|
+| `0-9` | Ingresa dígitos (máx. 6 dígitos) |
+| `+` `-` `*` `/` | Operadores aritméticos |
+| `Enter` / `=` | Ejecuta el cálculo |
+| `Backspace` `←` | Borra el último carácter |
+| `Escape` / `Delete` / `C` | Limpia toda la operación |
 
-### Operaciones Lógicas
-- Dígitos binarios: `0`, `1`
-- AND: `&` (con operando previo)
-- OR: `|` (con operando previo)
-- XOR: `^` (con operando previo)
-- NOT: `~` (con operando previo)
-- Igualar: `Enter`
-- Limpiar: `Escape` o `C`
+### Operaciones Lógicas (4 bits)
+| Entrada | Función |
+|---------|---------|
+| `0` `1` | Ingresa dígitos binarios (máx. 4 bits) |
+| `&` | Operación AND (requiere operando previo) |
+| `\|` | Operación OR |
+| `^` | Operación XOR |
+| `~` | Operación NOT (complemento a 1) |
+| `Enter` / `=` | Calcula la operación lógica |
+| `Escape` / `C` | Limpia la operación |
 
-### Conversiones
-- Hexadecimal: `0-9`, `A-F`
-- Binario: `0`, `1`
-- Resultado automático después de ingresar los dígitos
+### Conversiones (Hexadecimal ↔ Binario)
+| Entrada | Función |
+|---------|---------|
+| `0-9` `A-F` | Ingresa dígitos hexadecimales o binarios |
+| `Backspace` `←` | Borra el último carácter |
+| `Escape` / `C` | Limpia la entrada |
+| Botón `BIN ➜ HEX` | Convierte 8 bits binarios a hexadecimal |
+| Botón `HEX ➜ BIN` | Convierte 2 dígitos hexadecimales a binario |
 
 ## 🏗️ Arquitectura Técnica
 
 ### Flujo de Ejecución
 
 ```
-Interface Tkinter (Python)
-         ↓
-   calculadora_gui.py
-         ↓
-    ctypes.CDLL()
-         ↓
-     libcalc.so (Compilada)
-         ↓
-   Módulos ASM x86-64
-   - aritmetica.asm
-   - logica.asm
-   - conversion.asm
+┌─────────────────────────────────┐
+│  Pantalla de Bienvenida         │  Muestra logo UNSAAC,
+│  (PantallaBienvenida)           │  equipo y docente
+└──────────────┬──────────────────┘
+               │ Click START
+               ▼
+┌─────────────────────────────────┐
+│  Interfaz Principal (Calculadora)│  Tkinter GUI
+│  - 3 Pestañas (Aritm/Log/Conv)  │  - Historial en tiempo real
+│  - Display de resultados        │  - Sistema de colores
+│  - Botones interactivos         │  - Atajos de teclado
+└──────────────┬──────────────────┘
+               │
+    ┌──────────┴──────────┬─────────────┐
+    ▼                     ▼             ▼
+┌─────────┐        ┌─────────┐   ┌──────────┐
+│ctypes   │        │ctypes   │   │ctypes    │
+│CDLL()   │        │CDLL()   │   │CDLL()    │
+└────┬────┘        └────┬────┘   └────┬─────┘
+     │                  │            │
+     ▼                  ▼            ▼
+┌──────────────────────────────────────────┐
+│         libcalc.so (Compartida)          │ ELF64 (Linux)
+│         libcalc.dll (Dinámica)           │ PE/COFF (Windows)
+│  - aritmetica.o  (funciones aritm.)      │
+│  - logica.o      (funciones lógica)      │   Compiladas con NASM
+│  - conversion.o  (funciones conversión)  │
+└──────────────────────────────────────────┘
 ```
 
-### Funciones Exportadas por libcalc.so
+### Especificaciones de la GUI
 
-**Aritméticas:**
-- `asmSuma(a, b)` → retorna a + b
-- `asmResta(a, b)` → retorna a - b
-- `asmMultiplicacion(a, b)` → retorna a × b
-- `asmDivision(a, b)` → retorna a ÷ b
+**`calculadora_gui.py` (584 líneas)**
+- **PantallaBienvenida:** Pantalla inicial con información académica
+- **Calculadora:** Clase principal con interfaz tabular
+  - **Columna izquierda:** Display + pestañas de operaciones
+  - **Columna derecha:** Historial con scroll automático
+  - **Tema:** Paleta Catppuccin (azul oscuro, morado, naranja)
+  - **Modo oscuro:** Colores optimizados para vista prolongada
+- **Características especiales:**
+  - Historial numerado y scrollable con 130 px de ancho
+  - Botones reactivos con efectos de presión
+  - Resaltado de operadores activos
+  - Modo de estado (barra inferior): Muestra modo actual y operación
 
-**Lógicas:**
-- `asmAnd(a, b)` → retorna a & b
-- `asmOr(a, b)` → retorna a | b
-- `asmXor(a, b)` → retorna a ^ b
-- `asmNot(a)` → retorna ~a
+**Requisitos de GUI:**
+- Python 3.x con módulos: `tkinter`, `ctypes`, `PIL` (Pillow - opcional)
+- Resolución recomendada: ≥ 1024×768 px
+- Ancho de ventana: 660 px (no redimensionable)
+- Alto de ventana: 720 px (no redimensionable)
 
-**Conversiones:**
-- `asmBinToHex(cadena_binaria)` → retorna conversión a hexadecimal
-- `asmHexToBin(cadena_hexadecimal)` → retorna conversión a binario
+### Funciones Exportadas por libcalc
+
+#### Aritméticas `src/aritmetica.asm`
+- `asmSuma(a, b)` → Suma de dos enteros de 64 bits
+- `asmResta(a, b)` → Resta (a - b)
+- `asmMultiplicacion(a, b)` → Multiplicación de dos enteros
+- `asmDivision(a, b)` → División entera (cociente de a ÷ b)
+- `asmResiduo(a, b)` → Módulo (residuo de a ÷ b)
+
+#### Lógicas `src/logica.asm`
+Todas las operaciones operan sobre 4 bits (0-15):
+- `asmAnd(a, b)` → AND lógico (a & b), mascara a 4 bits
+- `asmOr(a, b)` → OR lógico (a | b), mascara a 4 bits
+- `asmXor(a, b)` → XOR lógico (a ^ b), mascara a 4 bits
+- `asmNot(a, b)` → Complemento a 1 (~a), solo usa el primer argumento
+
+#### Conversión `src/conversion.asm`
+- `asmBinToNum(char* "binario")` → Convierte cadena binaria (8 bits) a entero (0-255)
+  - Entrada: Cadena de 8 dígitos '0'/'1' terminada en '\n' o '\0'
+  - Salida: Valor 0-255, o -1 si hay error
+- `asmHexToNum(char* "hexadecimal")` → Convierte cadena hexadecimal (2 dígitos) a entero (0-255)
+  - Entrada: Cadena con '0'-'9', 'A'-'F' terminada en '\n' o '\0'
+  - Salida: Valor 0-255, o -1 si hay error
+
+**Convención de llamada:** 
+- **Linux (SysV):** RDI=arg1, RSI=arg2, retorna en RAX
+- **Windows (x64 MSVC):** RCX=arg1, RDX=arg2, retorna en RAX
 
 ## 👥 Contribuidores
 
@@ -214,28 +291,56 @@ nm -D build/libcalc.so | grep " T "
 #      build\conversion.obj
 ```
 
-## 🐛 Solución de problemas
+## 🐛 Solución de Problemas
 
 ### Error: "No se encontró ./build/libcalc.so"
-
+**Causa:** La librería no ha sido compilada  
 **Solución:** Ejecutar primero el script de compilación:
 ```bash
 bash scripts/compile_gui.sh
 ```
 
 ### Error: "nasm: command not found"
-
-**Solución:** Instalar NASM:
+**Causa:** NASM no está instalado en el sistema  
+**Solución - Debian/Ubuntu:**
 ```bash
+sudo apt-get update
 sudo apt-get install nasm
 ```
+**Solución - Windows:** Descargar desde https://www.nasm.us/
 
 ### Error: "No module named 'tkinter'"
-
-**Solución:** Instalar python3-tk:
+**Causa:** Python no tiene soporte para GUI  
+**Solución - Debian/Ubuntu:**
 ```bash
 sudo apt-get install python3-tk
 ```
+**Solución - Fedora/RHEL:**
+```bash
+sudo dnf install python3-tkinter
+```
+
+### Error: "ld: cannot find -lc"
+**Causa:** Librerías de C no están disponibles  
+**Solución - Debian/Ubuntu:**
+```bash
+sudo apt-get install build-essential libc6-dev
+```
+
+### Error: "libcalc.so: cannot open shared object file"
+**Causa:** La librería compilada no está en el PATH correcto  
+**Solución:** Asegúrese de que el archivo esté en `./build/libcalc.so`:
+```bash
+ls -la build/libcalc.so
+```
+
+### Error: DLL no funciona en Windows
+**Causa:** Variables de entorno no configuradas correctamente  
+**Solución:** Usar PowerShell administrativo y ejecutar `compile_win.bat` desde ahí
+
+### La interfaz se ve pequeña o cortada
+**Causa:** Resolución de pantalla muy baja  
+**Solución recomendada:** Usar resolución ≥ 1024×768 píxeles
 
 ## 📚 Referencias Técnicas
 
@@ -250,11 +355,30 @@ Proyecto académico de UNSAAC
 
 ## 💡 Notas de Desarrollo
 
-- La interfaz está optimizada para resolución 400x680 px y NO es redimensionable
-- El tema oscuro proporciona mejor experiencia visual
-- Los cálculos de gran magnitud pueden desbordarse en x86-64 (int64)
-- La librería se genera en tiempo de compilación, no en tiempo de ejecución
+- **Interfaz no redimensionable:** 660×720 píxeles (optimizado para resolución ≥1024×768)
+- **Tema oscuro profesional:** Paleta Catppuccin para comodidad visual prolongada
+- **Límites de cálculo:** 
+  - Aritméticas: int64 (−9223372036854775808 a 9223372036854775807)
+  - Lógicas: 4 bits (0000 a 1111, enmascarado automático)
+  - Conversiones: 8 bits (0-255) para binario, 2 dígitos (00-FF) para hexadecimal
+- **Cross-platform:** Windows (x64 MSVC) y Linux (SysV ELF64)
+- **Historial:** Se mantiene durante la sesión, se borra al cambiar de pestaña o reiniciar
+- **Carga dinámmica:** La librería ASM se carga automáticamente al iniciar el GUI
+
+## 📖 Información Adicional
+
+**Métodos de compilación:**
+- **Linux:** `bash scripts/compile_gui.sh` - Automático con NASM y ld
+- **Windows:** `.\compile_win.bat` - Automático con NASM y MSVC linker
+- **Manual:** Comandos individuales disponibles en [📝 Compilación Manual](#compilación-manual)
+
+**Directorios importantes:**
+- `src/` - Código fuente en ensamblador x86-64 (70-150 líneas c/u)
+- `build/` - Archivos objeto y librerías compiladas
+- `scripts/` - Scripts de compilación para cada SO
 
 ---
 
-**Última actualización:** 8 de marzo de 2026
+**Última actualización:** 9 de marzo de 2026  
+**Versión:** 1.0  
+**Estado:** Completamente funcional en Linux y Windows x64

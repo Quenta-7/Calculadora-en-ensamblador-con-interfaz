@@ -6,12 +6,20 @@ import os
 # ============================================
 # CARGA DE LIBRERÍA DE ENSAMBLADOR
 # ============================================
-lib_path = os.path.abspath("./build/libcalc.so")
+import platform
+if platform.system() == "Windows":
+    lib_file   = "./build/libcalc.dll"
+    compile_cmd = "compile_win.bat"
+else:
+    lib_file   = "./build/libcalc.so"
+    compile_cmd = "./scripts/compile_gui.sh"
+
+lib_path = os.path.abspath(lib_file)
 try:
     calc = ctypes.CDLL(lib_path)
 except OSError:
     print(f"❌ No se encontró {lib_path}")
-    print("   Ejecuta primero: ./scripts/compile_gui.sh")
+    print(f"   Ejecuta primero: {compile_cmd}")
     exit()
 
 def bind_int(name):

@@ -1,0 +1,14 @@
+LIBRARY libcalc
+
+EXPORTS
+    asmSuma
+    asmResta
+    asmMultiplicacion
+    asmDivision
+    asmResiduo
+    asmAnd
+    asmOr
+    asmXor
+    asmNot
+    asmBinToNum
+    asmHexToNum

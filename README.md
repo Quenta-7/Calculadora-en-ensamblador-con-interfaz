@@ -50,11 +50,18 @@ Calculadora-en-ensamblador-con-interfaz/
 
 ### Sistema Operativo
 - Linux (x86-64)
+- Windows 10/11 (64‑bit)
 
 ### Dependencias
 - **Python 3.x** con tk
 - **NASM** (Netwide Assembler) para compilar código ensamblador
+
+#### Linux
 - **GNU ld** (linker) para generar la librería compartida
+
+#### Windows
+- **Visual Studio 2019/2022** (carga de trabajo "Desarrollo de escritorio con C++")
+- NASM en el PATH (el instalador de Windows suele colocarlo en `C:\Users\<usuario>\AppData\Local\bin\NASM`)
 
 ### Instalación de dependencias (Debian/Ubuntu)
 
@@ -74,11 +81,24 @@ cd Calculadora
 
 ### 2. Compilar los módulos de ensamblador
 
+#### Linux
 Ejecutar el script de compilación:
 
 ```bash
 bash scripts/compile_gui.sh
 ```
+
+#### Windows
+Ejecutar el archivo por lotes desde PowerShell o CMD:
+
+```powershell
+.\compile_win.bat
+```
+
+El script para Windows:
+- busca `vcvars64.bat` usando `vswhere.exe` para activar el entorno MSVC
+- comprueba que NASM esté en el PATH
+- ensambla los `.asm` de `src\` y enlaza `build\libcalc.dll`
 
 Este script:
 - Compila cada módulo ASM a objetos `.o`
@@ -164,7 +184,7 @@ Interface Tkinter (Python)
 Si necesita recompilar sin usar el script:
 
 ```bash
-# Compilar cada módulo
+# Compilar cada módulo (Linux ELF64)
 nasm -f elf64 src/aritmetica.asm -o build/aritmetica.o
 nasm -f elf64 src/logica.asm -o build/logica.o
 nasm -f elf64 src/conversion.asm -o build/conversion.o
@@ -178,6 +198,20 @@ ld -shared \
 
 # Ver símbolos exportados
 nm -D build/libcalc.so | grep " T "
+
+# Windows equivalente (MSVC + NASM)
+# desde una terminal con `vcvars64.bat` cargado:
+#
+# nasm -f win64 src\aritmetica.asm -o build\aritmetica.obj
+# nasm -f win64 src\logica.asm -o build\logica.obj
+# nasm -f win64 src\conversion.asm -o build\conversion.obj
+#
+# link /DLL /NOENTRY /NODEFAULTLIB \
+#      /DEF:src\libcalc.def \
+#      /OUT:build\libcalc.dll \
+#      build\aritmetica.obj \
+#      build\logica.obj \
+#      build\conversion.obj
 ```
 
 ## 🐛 Solución de problemas

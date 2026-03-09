@@ -7,6 +7,16 @@
 
 section .text
 
+; compatibilidad SysV / Windows
+%ifdef WIN64
+%macro PASS1 0
+    mov rdi, rcx        ; primer argumento en RCX pasará a RDI
+%endmacro
+%else
+%macro PASS1 0
+%endmacro
+%endif
+
 ; ============================================
 ; asmBinToNum
 ; Entrada : RDI = char* ej: "10101010\n"
@@ -15,6 +25,7 @@ section .text
 ; ============================================
 global asmBinToNum
 asmBinToNum:
+    PASS1
     push rbx
     push rcx
     mov rsi, rdi        ; RDI → RSI para leer bytes
@@ -68,6 +79,7 @@ asmBinToNum:
 ; ============================================
 global asmHexToNum
 asmHexToNum:
+    PASS1
     push rbx
     push rcx
     mov rsi, rdi        ; RDI → RSI

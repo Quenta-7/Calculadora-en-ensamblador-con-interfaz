@@ -41,15 +41,15 @@ if %errorlevel% neq 0 (
 
 :: ── Compilar modulos ASM ──────────────────────────────────
 echo Compilando aritmetica.asm  (Jose^)...
-nasm -f win64 src\aritmetica.asm -o build\aritmetica.obj
+nasm -DWIN64 -f win64 src\aritmetica.asm -o build\aritmetica.obj
 if %errorlevel% neq 0 ( echo ERROR en aritmetica.asm & pause & exit /b 1 )
 
 echo Compilando logica.asm      (Efrain^)...
-nasm -f win64 src\logica.asm -o build\logica.obj
+nasm -DWIN64 -f win64 src\logica.asm -o build\logica.obj
 if %errorlevel% neq 0 ( echo ERROR en logica.asm & pause & exit /b 1 )
 
 echo Compilando conversion.asm  (Emmi^)...
-nasm -f win64 src\conversion.asm -o build\conversion.obj
+nasm -DWIN64 -f win64 src\conversion.asm -o build\conversion.obj
 if %errorlevel% neq 0 ( echo ERROR en conversion.asm & pause & exit /b 1 )
 
 :: ── Enlazar DLL ───────────────────────────────────────────

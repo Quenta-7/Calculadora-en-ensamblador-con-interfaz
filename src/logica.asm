@@ -7,8 +7,20 @@
 
 section .text
 
+; soporta SysV y MSVC x64
+%ifdef WIN64
+%macro PASS2 0
+    mov rdi, rcx
+    mov rsi, rdx
+%endmacro
+%else
+%macro PASS2 0
+%endmacro
+%endif
+
 global asmAnd
 asmAnd:
+    PASS2
     mov rax, rdi
     and rax, rsi
     and rax, 0xF
@@ -16,6 +28,7 @@ asmAnd:
 
 global asmOr
 asmOr:
+    PASS2
     mov rax, rdi
     or  rax, rsi
     and rax, 0xF
@@ -23,6 +36,7 @@ asmOr:
 
 global asmXor
 asmXor:
+    PASS2
     mov rax, rdi
     xor rax, rsi
     and rax, 0xF
@@ -30,6 +44,7 @@ asmXor:
 
 global asmNot
 asmNot:
+    PASS2
     ; RDI = valor de 4 bits → RAX = NOT de 4 bits
     mov rax, rdi
     not rax

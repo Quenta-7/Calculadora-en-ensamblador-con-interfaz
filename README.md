@@ -129,8 +129,14 @@ Este script:
 
 ### 3. Ejecutar la calculadora
 
+#### Linux
 ```bash
 python3 calculadora_gui.py
+```
+
+#### Windows
+```powershell
+python calculadora_gui.py
 ```
 
 La ventana de la calculadora se abrirá con acceso a todas las funcionalidades.
